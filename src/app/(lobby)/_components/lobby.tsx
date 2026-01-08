@@ -20,6 +20,8 @@ import { Shell } from "@/components/shell"
 import { StoreCard } from "@/components/store-card"
 
 import { CategoryCard } from "./category-card"
+import { FeaturesSection } from "./features-section"
+import { JoinNewsletterForm } from "@/components/join-newsletter-form"
 
 interface LobbyProps {
   githubStarsPromise: ReturnType<typeof getGithubStars>
@@ -128,6 +130,18 @@ export async function Lobby({
           />
         ))}
       </ContentSection>
+      <FeaturesSection />
+      <section className="py-14 md:py-20 lg:py-24">
+        <div className="mx-auto flex max-w-[58rem] flex-col items-center space-y-4 text-center">
+          <h2 className="font-heading text-3xl leading-[1.1] sm:text-3xl md:text-6xl">
+            Subscribe to our newsletter
+          </h2>
+          <p className="max-w-[85%] leading-normal text-muted-foreground sm:text-lg sm:leading-7">
+            Get the latest updates on new products and features.
+          </p>
+          <JoinNewsletterForm />
+        </div>
+      </section>
     </Shell>
   )
 }

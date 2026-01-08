@@ -82,12 +82,13 @@ export async function Lobby({
           className="animate-fade-up"
           style={{ animationDelay: "0.40s", animationFillMode: "both" }}
         >
-          <Link href="/products" className={cn(buttonVariants())}>
+          <Link href="/products" className={cn(buttonVariants({ variant: "yellow" }))} id="homepage-buy-button">
             Buy now
           </Link>
           <Link
             href="/dashboard/stores"
-            className={cn(buttonVariants({ variant: "outline" }))}
+            className={cn(buttonVariants({ variant: "yellow" }))}
+            id="homepage-sell-button"
           >
             Sell now
           </Link>

@@ -2,12 +2,12 @@ import { relations } from "drizzle-orm"
 import {
   decimal,
   index,
-  pgTable,
+  sqliteTable,
   primaryKey,
   text,
   unique,
-  varchar,
-} from "drizzle-orm/pg-core"
+  text,
+} from "drizzle-orm/sqlite-core"
 
 import { generateId } from "@/lib/id"
 
@@ -17,13 +17,13 @@ import { stores } from "./stores"
 import { lifecycleDates } from "./utils"
 
 // store variants
-export const variants = pgTable(
+export const variants = sqliteTable(
   "variants",
   {
-    id: varchar("id", { length: 30 })
+    id: text("id", { length: 30 })
       .$defaultFn(() => generateId())
       .primaryKey(),
-    storeId: varchar("store_id", { length: 30 })
+    storeId: text("store_id", { length: 30 })
       .references(() => stores.id, { onDelete: "cascade" })
       .notNull(),
     name: text("name").notNull(),
@@ -44,16 +44,16 @@ export const variantsRelations = relations(variants, ({ one }) => ({
 export type Variant = typeof variants.$inferSelect
 export type NewVariant = typeof variants.$inferInsert
 
-export const productVariants = pgTable(
+export const productVariants = sqliteTable(
   "product_variants",
   {
-    id: varchar("id", { length: 30 })
+    id: text("id", { length: 30 })
       .$defaultFn(() => generateId())
       .primaryKey(),
-    productId: varchar("product_id", { length: 30 })
+    productId: text("product_id", { length: 30 })
       .references(() => products.id, { onDelete: "cascade" })
       .notNull(),
-    variantId: varchar("variant_id", { length: 30 })
+    variantId: text("variant_id", { length: 30 })
       .references(() => variants.id, { onDelete: "cascade" })
       .notNull(),
     ...lifecycleDates,
@@ -82,15 +82,15 @@ export const productVariantsRelations = relations(
 export type ProductVariant = typeof productVariants.$inferSelect
 export type NewProductVariant = typeof productVariants.$inferInsert
 
-export const productVariantValues = pgTable(
+export const productVariantValues = sqliteTable(
   "product_variant_values",
   {
-    productVariantId: varchar("product_variant_id", { length: 30 })
+    productVariantId: text("product_variant_id", { length: 30 })
       .references(() => productVariants.id, { onDelete: "cascade" })
       .notNull(),
     value: text("value").notNull(),
     price: decimal("price", { precision: 10, scale: 2 }).notNull(),
-    stockId: varchar("stock_id", { length: 30 })
+    stockId: text("stock_id", { length: 30 })
       .references(() => stocks.id, { onDelete: "cascade" })
       .notNull(),
     ...lifecycleDates,

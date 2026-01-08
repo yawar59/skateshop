@@ -1,22 +1,22 @@
 import { relations } from "drizzle-orm"
-import { index, pgTable, text, varchar } from "drizzle-orm/pg-core"
+import { index, sqliteTable, text, text } from "drizzle-orm/sqlite-core"
 
 import { generateId } from "@/lib/id"
 
 import { stores } from "./stores"
 import { lifecycleDates } from "./utils"
 
-export const customers = pgTable(
+export const customers = sqliteTable(
   "customers",
   {
-    id: varchar("id", { length: 30 })
+    id: text("id", { length: 30 })
       .$defaultFn(() => generateId())
       .primaryKey(), // prefix_ + nanoid (12)
     name: text("name"),
     email: text("email"),
-    storeConnectId: varchar("store_connect_id").unique(), // stripe connect
-    stripeCustomerId: varchar("stripe_customer_id").unique().notNull(),
-    storeId: varchar("store_id", { length: 30 })
+    storeConnectId: text("store_connect_id").unique(), // stripe connect
+    stripeCustomerId: text("stripe_customer_id").unique().notNull(),
+    storeId: text("store_id", { length: 30 })
       .references(() => stores.id, { onDelete: "cascade" })
       .notNull(),
     ...lifecycleDates,

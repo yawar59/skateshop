@@ -1,12 +1,12 @@
-import { pgTable, text, varchar } from "drizzle-orm/pg-core"
+import { sqliteTable, text, text } from "drizzle-orm/sqlite-core"
 
 import { generateId } from "@/lib/id"
 
 import { lifecycleDates } from "./utils"
 
 // @see: https://github.com/jackblatch/OneStopShop/blob/main/db/schema.ts
-export const addresses = pgTable("addresses", {
-  id: varchar("id", { length: 30 })
+export const addresses = sqliteTable("addresses", {
+  id: text("id", { length: 30 })
     .$defaultFn(() => generateId())
     .primaryKey(), // prefix_ + nanoid (12)
   line1: text("line1"),

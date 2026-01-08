@@ -1,21 +1,21 @@
 import { relations } from "drizzle-orm"
-import { index, pgTable, text, varchar } from "drizzle-orm/pg-core"
+import { index, sqliteTable, text, text } from "drizzle-orm/sqlite-core"
 
 import { generateId } from "@/lib/id"
 
 import { categories } from "./categories"
 import { lifecycleDates } from "./utils"
 
-export const subcategories = pgTable(
+export const subcategories = sqliteTable(
   "subcategories",
   {
-    id: varchar("id", { length: 30 })
+    id: text("id", { length: 30 })
       .$defaultFn(() => generateId())
       .primaryKey(), // prefix_ + nanoid (12)
     name: text("name").notNull().unique(),
     slug: text("slug").unique().notNull(),
     description: text("description"),
-    categoryId: varchar("category_id", { length: 30 })
+    categoryId: text("category_id", { length: 30 })
       .references(() => categories.id, { onDelete: "cascade" })
       .notNull(),
     ...lifecycleDates,

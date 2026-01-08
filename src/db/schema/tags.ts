@@ -1,12 +1,12 @@
 import { relations } from "drizzle-orm"
 import {
   index,
-  pgTable,
+  sqliteTable,
   primaryKey,
   text,
   unique,
-  varchar,
-} from "drizzle-orm/pg-core"
+  text,
+} from "drizzle-orm/sqlite-core"
 
 import { generateId } from "@/lib/id"
 
@@ -15,15 +15,15 @@ import { stores } from "./stores"
 import { lifecycleDates } from "./utils"
 
 // store tags
-export const tags = pgTable(
+export const tags = sqliteTable(
   "tags",
   {
-    id: varchar("id", { length: 30 })
+    id: text("id", { length: 30 })
       .$defaultFn(() => generateId())
       .primaryKey(),
     name: text("name").notNull(),
     color: text("color").notNull().default("blue"),
-    storeId: varchar("store_id", { length: 30 })
+    storeId: text("store_id", { length: 30 })
       .references(() => stores.id, { onDelete: "cascade" })
       .notNull(),
     ...lifecycleDates,
@@ -46,13 +46,13 @@ export const tagsRelations = relations(tags, ({ one, many }) => ({
 export type Tag = typeof tags.$inferSelect
 export type NewTag = typeof tags.$inferInsert
 
-export const productTags = pgTable(
+export const productTags = sqliteTable(
   "product_tags",
   {
-    productId: varchar("product_id", { length: 30 })
+    productId: text("product_id", { length: 30 })
       .references(() => products.id, { onDelete: "cascade" })
       .notNull(),
-    tagId: varchar("tag_id", { length: 30 })
+    tagId: text("tag_id", { length: 30 })
       .references(() => tags.id, { onDelete: "cascade" })
       .notNull(),
     ...lifecycleDates,

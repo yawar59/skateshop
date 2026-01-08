@@ -1,7 +1,7 @@
 // @see https://github.com/unkeyed/unkey/blob/main/internal/db/src/schema/util/lifecycle_dates.ts
 
 import { sql } from "drizzle-orm"
-import { timestamp } from "drizzle-orm/pg-core"
+import { timestamp } from "drizzle-orm/sqlite-core"
 
 export const lifecycleDates = {
   createdAt: timestamp("created_at").defaultNow().notNull(),

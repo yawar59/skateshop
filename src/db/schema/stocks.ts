@@ -1,18 +1,18 @@
 import { relations } from "drizzle-orm"
-import { index, integer, pgTable, varchar } from "drizzle-orm/pg-core"
+import { index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core"
 
 import { generateId } from "@/lib/id"
 
 import { lifecycleDates } from "./utils"
 import { productVariants, productVariantValues } from "./variants"
 
-export const stocks = pgTable(
+export const stocks = sqliteTable(
   "stocks",
   {
-    id: varchar("id", { length: 30 })
+    id: text("id", { length: 30 })
       .$defaultFn(() => generateId())
       .primaryKey(),
-    productVariantId: varchar("product_variant_id", { length: 30 })
+    productVariantId: text("product_variant_id", { length: 30 })
       .references(() => productVariants.id, { onDelete: "cascade" })
       .notNull(),
     quantity: integer("quantity").notNull().default(0),

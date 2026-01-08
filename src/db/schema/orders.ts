@@ -3,10 +3,10 @@ import {
   index,
   integer,
   json,
-  pgTable,
+  sqliteTable,
   text,
-  varchar,
-} from "drizzle-orm/pg-core"
+  text,
+} from "drizzle-orm/sqlite-core"
 
 import { generateId } from "@/lib/id"
 import { type CheckoutItemSchema } from "@/lib/validations/cart"
@@ -16,13 +16,13 @@ import { stores } from "./stores"
 import { lifecycleDates } from "./utils"
 
 // @see: https://github.com/jackblatch/OneStopShop/blob/main/db/schema.ts
-export const orders = pgTable(
+export const orders = sqliteTable(
   "orders",
   {
-    id: varchar("id", { length: 30 })
+    id: text("id", { length: 30 })
       .$defaultFn(() => generateId())
       .primaryKey(), // prefix_ + nanoid (12)
-    storeId: varchar("store_id", { length: 30 })
+    storeId: text("store_id", { length: 30 })
       .references(() => stores.id, { onDelete: "cascade" })
       .notNull(),
     items: json("items").$type<CheckoutItemSchema[] | null>().default(null),
@@ -34,7 +34,7 @@ export const orders = pgTable(
     stripePaymentIntentStatus: text("stripe_payment_intent_status").notNull(),
     name: text("name").notNull(),
     email: text("email").notNull(),
-    addressId: varchar("address_id", { length: 30 })
+    addressId: text("address_id", { length: 30 })
       .references(() => addresses.id, { onDelete: "cascade" })
       .notNull(),
     ...lifecycleDates,

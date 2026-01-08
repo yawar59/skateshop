@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm"
-import { pgTable, text, varchar } from "drizzle-orm/pg-core"
+import { sqliteTable, text, text } from "drizzle-orm/sqlite-core"
 
 import { generateId } from "@/lib/id"
 
@@ -7,8 +7,8 @@ import { products } from "./products"
 import { subcategories } from "./subcategories"
 import { lifecycleDates } from "./utils"
 
-export const categories = pgTable("categories", {
-  id: varchar("id", { length: 30 })
+export const categories = sqliteTable("categories", {
+  id: text("id", { length: 30 })
     .$defaultFn(() => generateId())
     .primaryKey(), // prefix_ + nanoid (12)
   name: text("name").notNull().unique(),

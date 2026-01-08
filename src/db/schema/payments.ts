@@ -2,10 +2,10 @@ import { relations } from "drizzle-orm"
 import {
   boolean,
   index,
-  pgTable,
+  sqliteTable,
   timestamp,
-  varchar,
-} from "drizzle-orm/pg-core"
+  text,
+} from "drizzle-orm/sqlite-core"
 
 import { generateId } from "@/lib/id"
 
@@ -13,16 +13,16 @@ import { stores } from "./stores"
 import { lifecycleDates } from "./utils"
 
 // @see: https://github.com/jackblatch/OneStopShop/blob/main/db/schema.ts
-export const payments = pgTable(
+export const payments = sqliteTable(
   "payments",
   {
-    id: varchar("id", { length: 30 })
+    id: text("id", { length: 30 })
       .$defaultFn(() => generateId())
       .primaryKey(), // prefix_ + nanoid (12)
-    storeId: varchar("store_id", { length: 30 })
+    storeId: text("store_id", { length: 30 })
       .references(() => stores.id, { onDelete: "cascade" })
       .notNull(),
-    stripeAccountId: varchar("stripe_account_id", { length: 256 }).notNull(),
+    stripeAccountId: text("stripe_account_id", { length: 256 }).notNull(),
     stripeAccountCreatedAt: timestamp("stripe_account_created_at"),
     stripeAccountExpiresAt: timestamp("stripe_account_expires_at"),
     detailsSubmitted: boolean("details_submitted").notNull().default(false),

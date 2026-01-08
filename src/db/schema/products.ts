@@ -5,11 +5,11 @@ import {
   index,
   integer,
   json,
-  pgEnum,
-  pgTable,
   text,
-  varchar,
-} from "drizzle-orm/pg-core"
+  sqliteTable,
+  text,
+  text,
+} from "drizzle-orm/sqlite-core"
 
 import { generateId } from "@/lib/id"
 
@@ -20,25 +20,25 @@ import { productTags } from "./tags"
 import { lifecycleDates } from "./utils"
 import { productVariants } from "./variants"
 
-export const productStatusEnum = pgEnum("product_status", [
+export const productStatusEnum = text("product_status", [
   "active",
   "draft",
   "archived",
 ])
 
-export const products = pgTable(
+export const products = sqliteTable(
   "products",
   {
-    id: varchar("id", { length: 30 })
+    id: text("id", { length: 30 })
       .$defaultFn(() => generateId())
       .primaryKey(), // prefix_ + nanoid (12)
     name: text("name").notNull(),
     description: text("description"),
     images: json("images").$type<StoredFile[] | null>().default(null),
-    categoryId: varchar("category_id", { length: 30 })
+    categoryId: text("category_id", { length: 30 })
       .references(() => categories.id, { onDelete: "cascade" })
       .notNull(),
-    subcategoryId: varchar("subcategory_id", { length: 30 }).references(
+    subcategoryId: text("subcategory_id", { length: 30 }).references(
       () => subcategories.id,
       { onDelete: "cascade" }
     ),
@@ -56,7 +56,7 @@ export const products = pgTable(
     inventory: integer("inventory").notNull().default(0),
     rating: integer("rating").notNull().default(0),
     status: productStatusEnum("status").notNull().default("active"),
-    storeId: varchar("store_id", { length: 30 })
+    storeId: text("store_id", { length: 30 })
       .references(() => stores.id, { onDelete: "cascade" })
       .notNull(),
     ...lifecycleDates,

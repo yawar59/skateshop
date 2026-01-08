@@ -66,6 +66,7 @@ export async function Lobby({
           </Badge>
         </Link>
         <PageHeaderHeading
+          size="lg"
           className="animate-fade-up"
           style={{ animationDelay: "0.20s", animationFillMode: "both" }}
         >
